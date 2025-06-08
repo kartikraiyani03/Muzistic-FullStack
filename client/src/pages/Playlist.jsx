@@ -17,10 +17,13 @@ import { IoClose } from "react-icons/io5";
 import { AudioContext } from '../context/AudioContext'
 import { IoMdArrowBack } from "react-icons/io";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import axios from 'axios'
+import { useEffect } from 'react'
 
 const Playlist = () => {
 
   let { allPlayList, likeList, playListObject } = useSelector((state) => state.playlist)
+  let { userObject } = useSelector((state) => state.account)
   let { login } = useSelector((state) => state.account)
   let { isPlaying, songId, songObject } = useSelector((state) => state.songPlayer)
   console.log(allPlayList)
@@ -28,18 +31,37 @@ const Playlist = () => {
   let dis = useDispatch()
   let nav = useNavigate()
   let { pid } = useParams()
+  let [songsById, setSongsById] = useState([])
 
-  let currPlayList = allPlayList.find((playlist) => playlist?.pid === playListObject?.pid)
-  console.log(currPlayList)
+  let getAllSongByUserId = async () => {
+    try {
+      let res = await axios.get(`http://localhost:3000/playlist/getAllSongsById?userid=${userObject._id}`,)
+      if (res.data.data) {
+        console.log("User wise songs", res.data.data)
+        setSongsById(res.data.data)
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
 
-  if (!currPlayList) {
+  useEffect(() => {
+    getAllSongByUserId()
+  }, [userObject])
+
+
+  // let currPlayList = allPlayList.find((playlist) => playlist?.pid === playListObject?.pid)
+  // console.log(currPlayList)
+
+  if (!songsById) {
     return <div className="h-[100vh] flex justify-center items-center">
       <h1 className="text-white font-semibold text-3xl">PlayList Not Found</h1>
     </div>
   }
 
   let removeHandler = (song, currPlayList) => {
-    dis(remove({currPlayList,song}))
+    dis(remove({ currPlayList, song }))
   }
 
   let removeLikeHandler = (song) => {
@@ -58,15 +80,15 @@ const Playlist = () => {
 
       <div className="grid px-3 grid-cols-2 place-items-center">
         {
-          currPlayList?.playlist?.length > 0
+          songsById?.playlistArray?.length > 0
             ? (
-              currPlayList?.playlist?.map((song) => {
-                console.log("playList Length " + currPlayList.playlist.length)
+              songsById?.map((song) => {
+                console.log("playList Length " + songsById.playlistArray.length)
 
                 let isSongPlaying = song?.songIdng === songId && isPlaying
                 return (
                   <div className="bg-zinc-900 rounded-lg p-3 my-3 relative " key={song?.id}>
-                    <div onClick={() => removeHandler(song, currPlayList)} className="flex absolute right-2 ">
+                    <div onClick={() => removeHandler(song, songsById)} className="flex absolute right-2 ">
                       <IoClose className='text-white text-2xl cursor-pointer' />
                     </div>
                     <div className="group">

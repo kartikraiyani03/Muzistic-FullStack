@@ -1,24 +1,46 @@
 let Playlist = require('../models/Playlist')
 
+
+exports.getAllPlaylistById = async (req, res) => {
+    try {
+
+        let { userid } = req.query
+        let playlists = await Playlist.find({ userid })
+
+        return res.status(200).json({
+            message: "Playlist Fetched Successfully",
+            data: playlists
+        })
+    }
+    catch (err) {
+        console.log(e.message)
+        res.status(500).json({
+            message: "Internal server",
+            err: e.message
+        })
+    }
+}
+
 exports.createPlaylist = async (req, res) => {
     try {
 
-        let { userid, name, arr } = req.body
+        console.log(req.body)
+        let { userid, pname, arr } = req.body
 
-        let exist = await Playlist.find({ name })
+        //let exist = await Playlist.find({ name })
+        //
+        //if (exist) {
+        //    return res.status(409).json({
+        //        message: "Playlist alredy exist"
+        //    })
+        //}
 
-        if (exist) {
-            return res.status(409).json({
-                message: "Playlist alredy exist"
-            })
-        }
-
-        let playlist = await Playlist.create({ userid, name, arr })
+        let playlist = await Playlist.create({ userid, pname, arr, poster: `https://api.dicebear.com/5.x/initials/svg?seed=${pname}` })
 
         res.status(200).json({
             message: "Playlist cretaed succeassfully",
             data: playlist
-        })  
+        })
 
     }
     catch (e) {
@@ -33,7 +55,8 @@ exports.createPlaylist = async (req, res) => {
 
 exports.deletePlaylist = async (req, res) => {
     try {
-        const { playlistId } = req.params;
+        console.log(req.body)
+        const { playlistId } = req.body;
 
         const deleted = await Playlist.findByIdAndDelete(playlistId);
 
@@ -104,3 +127,44 @@ exports.removeFromPlaylist = async (req, res) => {
         });
     }
 };
+
+
+exports.getAllSongsById = async (req, res) => {
+    try {
+        let { userid } = req.query
+        let songs = await Playlist.find({ userid })
+
+        return res.status(200).json({
+            message: "Fetch successfully",
+            data: songs
+        })
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).json({
+            message: "Internal server error",
+            err: e.message
+        });
+    }
+}
+
+exports.getPlaylistById = async (req, res) => {
+    try {
+        let { playlistId } = req.body
+
+        let playlist = await Playlist.find({ playlistId })
+
+        return res.status(200).json({
+            message: "Playlist fetch successfully",
+            data: playlist
+        })
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).json({
+            message: "Internal server error",
+            err: e.message
+        });
+    }
+
+}
