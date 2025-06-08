@@ -25,7 +25,7 @@ const Login = ({ login }) => {
   const validateField = (fieldName, value) => {
     const newErrors = { ...error };
     let isValid = true
-
+ 
     switch (fieldName) {
       case 'email':
         if (!value) {

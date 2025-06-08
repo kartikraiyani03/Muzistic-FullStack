@@ -26,7 +26,7 @@ const Signup = ({login, setLogin}) =>
         Create account
       </h2>
     </div>
-
+ 
     <div className="mt-5 z-20 sm:mx-auto sm:w-full sm:max-w-sm">
       <form method="" onSubmit={submitHandler} className="space-y-3">
         <div className="flex justify-between items-start space-x-4">

@@ -26,7 +26,7 @@ const Account = () => {
     dis(playListClickHandler(value))
     nav(`/playlist/${value?.pid}`)
   }
-
+ 
   return (
     <div className='pt-[60px] min-h-[100vh] pb-[150px] text-white bg-gradient-to-t from-zinc-900 via-zinc-900 to-black'>
       {

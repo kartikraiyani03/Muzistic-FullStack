@@ -18,7 +18,7 @@ exports.createPlaylist = async (req, res) => {
         res.status(200).json({
             message: "Playlist cretaed succeassfully",
             data: playlist
-        })
+        })  
 
     }
     catch (e) {

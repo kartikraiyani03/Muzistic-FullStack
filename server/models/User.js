@@ -18,4 +18,4 @@ let UserSchema = new mg.Schema({
     }
 })
 
-module.exports = mg.model("user",UserSchema);
+module.exports = mg.model("user",UserSchema); 
