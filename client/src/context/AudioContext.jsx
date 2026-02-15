@@ -61,7 +61,7 @@ let AudioProvider = ({children}) =>
     {
         dispatch(nextHandler())
         const { id, poster, artist, songName, index } = store.getState().songPlayer.songObject;
-        let nextPath = `src/assets/songs/${id}.mp3`
+        let nextPath = `./public/assets/songs/${id}.mp3`
         audio.current.src = nextPath
         audio.current.play()
     

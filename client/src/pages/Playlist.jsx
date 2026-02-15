@@ -96,7 +96,7 @@ const Playlist = () => {
                         {
                           isSongPlaying
                             ? <FaPauseCircle onClick={() => pauseSong()} className={`cursor-pointer text-5xl ${isSongPlaying ? 'block' : 'hidden'}`} />
-                            : <FaCirclePlay onClick={() => playSong(`src/assets/songs/${song?.id}.mp3`, song.id, song?.poster, song?.artist, song?.songName, song?.index)} className='text-5xl cursor-pointer' />
+                            : <FaCirclePlay onClick={() => playSong(`./public/assets/songs/${song?.id}.mp3`, song.id, song?.poster, song?.artist, song?.songName, song?.index)} className='text-5xl cursor-pointer' />
                         }
                       </div>
                       <div className="flex justify-between items-center">

@@ -21,7 +21,7 @@ const Card = ({value, isSongPlaying}) => {
                     {
                         isSongPlaying
                             ? <FaPauseCircle onClick={() => pauseSong()} className={`cursor-pointer text-5xl ${isSongPlaying ? 'block' : 'hidden'}`} />
-                            : <FaCirclePlay onClick={() => playSong(`src/assets/songs/${value.id}.mp3`, value.id, value.poster, value.artist, value.songName, value.index)} className='text-5xl cursor-pointer' />
+                            : <FaCirclePlay onClick={() => playSong(`./public/assets/songs/${value.id}.mp3`, value.id, value.poster, value.artist, value.songName, value.index)} className='text-5xl cursor-pointer' />
                     }
                 </div>
             </div>

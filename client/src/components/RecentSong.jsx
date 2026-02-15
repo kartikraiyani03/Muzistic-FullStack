@@ -34,7 +34,7 @@ const RecentSong = ({ value, isSongPlaying }) => {
           isSongPlaying ?
             <FaCirclePause onClick={() => pauseSong()} className='text-red text-[30px]' />
             :
-            <FaCirclePlay onClick={() => playSong(`src/assets/songs/${value.id}.mp3`, value.id, value.poster, value.artist, value.songName, value.index)} className='text-red text-[30px]' />
+            <FaCirclePlay onClick={() => playSong(`./public/assets/songs/${value.id}.mp3`, value.id, value.poster, value.artist, value.songName, value.index)} className='text-red text-[30px]' />
         }
       </div>
       <audio ref={audio} />
