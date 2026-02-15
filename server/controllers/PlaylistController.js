@@ -64,7 +64,7 @@ exports.deletePlaylist = async (req, res) => {
             return res.status(404).json({
                 message: "Playlist not found"
             });
-        }
+        }               
 
         res.status(200).json({
             message: "Playlist deleted successfully",
@@ -129,10 +129,10 @@ exports.removeFromPlaylist = async (req, res) => {
 };
 
 
-exports.getAllSongsById = async (req, res) => {
+exports.getSongByUserPlaylistId = async (req, res) => {
     try {
-        let { userid } = req.query
-        let songs = await Playlist.find({ userid })
+        let { playlist } = req.query
+        let songs = await Playlist.find({ playlist })
 
         return res.status(200).json({
             message: "Fetch successfully",

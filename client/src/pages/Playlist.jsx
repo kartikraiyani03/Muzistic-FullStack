@@ -26,18 +26,17 @@ const Playlist = () => {
   let { userObject } = useSelector((state) => state.account)
   let { login } = useSelector((state) => state.account)
   let { isPlaying, songId, songObject } = useSelector((state) => state.songPlayer)
-  console.log(allPlayList)
   let { playSong, pauseSong, audio } = useContext(AudioContext)
   let dis = useDispatch()
   let nav = useNavigate()
   let { pid } = useParams()
   let [songsById, setSongsById] = useState([])
 
-  let getAllSongByUserId = async () => {
+  let getSongByUserPlaylistId = async (playlistid) => {
     try {
-      let res = await axios.get(`http://localhost:3000/playlist/getAllSongsById?userid=${userObject._id}`,)
+      let res = await axios.get(`http://localhost:3000/playlist/getSongByUserPlaylistId?playlist=${playlistid}`,)
       if (res.data.data) {
-        console.log("User wise songs", res.data.data)
+        console.log("Playlist wise songs", res.data.data)
         setSongsById(res.data.data)
       }
     }
@@ -47,7 +46,7 @@ const Playlist = () => {
   }
 
   useEffect(() => {
-    getAllSongByUserId()
+    getSongByUserPlaylistId()
   }, [userObject])
 
 

@@ -27,6 +27,7 @@ const Play = ({open, setOpen, toggleHandler, bar, setBar, barHandler }) => {
     let { isPlaying, songId, artistObject, songObject, songs } = useSelector((state) => state.songPlayer)
     let { allPlayList, likeList } = useSelector((state) => state.playlist)
     let {audio, playSong, pauseSong, prevSong, nextSong, formTime, timeUpdateHandler, durationUpdateHandler, seekHandler, progressBarWidth, currTime, duration } = useContext(AudioContext)
+    console.log("Curr Time in Play Component:", currTime)
 
     useEffect(() => {
         if (open || bar) {

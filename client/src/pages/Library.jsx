@@ -15,6 +15,7 @@ import { GoAlert } from "react-icons/go";
 import { useState } from 'react'
 import { IoClose } from "react-icons/io5";
 import { AudioContext } from '../context/AudioContext'
+import { PlaylistContext } from '../context/PlaylistContext'
 import axios from 'axios'
 
 const Library = () => {
@@ -24,6 +25,7 @@ const Library = () => {
   let { isPlaying, songId, songObject } = useSelector((state) => state.songPlayer)
   let { userObject } = useSelector((state) => state.account);
   let { playSong, prevSong, pauseSong, nextSong } = useContext(AudioContext)
+  let { getAllPlaylistById,playlistById } = useContext(PlaylistContext)
   let dis = useDispatch()
   let nav = useNavigate()
   let [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +33,7 @@ const Library = () => {
   let [userid, setUserId] = useState(null)
   let [songs, setSongs] = useState([])
   let [error, setError] = useState({ pname: '' })
-  let [playlistById, setPlaylistById] = useState([])
+  // let [playlistById, setPlaylistById] = useState([])
 
 
   let changeHandler = (e) => {
@@ -51,18 +53,18 @@ const Library = () => {
   }, [userObject])
 
 
-  let getAllPlaylistById = async () => {
-    try {
-      let res = await axios.get(`http://localhost:3000/playlist/getAllPlaylistById?userid=${userObject._id}`,)
-      if (res.data.data) {
-        console.log("User wise playlist", res.data.data)
-        setPlaylistById(res.data.data)
-      }
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
+  // let getAllPlaylistById = async () => {
+  //   try {
+  //     let res = await axios.get(`http://localhost:3000/playlist/getAllPlaylistById?userid=${userObject._id}`,)
+  //     if (res.data.data) {
+  //       console.log("User wise playlist", res.data.data)
+  //       setPlaylistById(res.data.data)
+  //     }
+  //   }
+  //   catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
 
   let newError = { pid: '', pname: '' }
@@ -110,8 +112,6 @@ const Library = () => {
             songs
           }
 
-          console.log("Sending to backend:", payload)
-          console.log("Sending to backend:", payload.pname)
 
           let res = await axios.post("http://localhost:3000/playlist/createPlaylist", payload)
 
@@ -119,7 +119,6 @@ const Library = () => {
             dis(addPlayListObjectHandler({ playListData, userid, songs }))
             setError({ pname: '' })
             setIsModalOpen(false);
-            console.log(res.data.data)
             setPlayListData({ pname: '' })
             getAllPlaylistById()
 
@@ -138,11 +137,9 @@ const Library = () => {
 
   let deletePlaylist = async (playlistId) => {
     try {
-      console.log("deleting ", playlistId)
       let res = await axios.post(`http://localhost:3000/playlist/deletePlaylist`, { playlistId })
 
       if (res.status == 200) {
-        console.log("Playlist removed", playListObject)
         getAllPlaylistById()
         dis(removePlayListObjectHandler(playListObject))
       }
@@ -155,7 +152,6 @@ const Library = () => {
 
   let removeLikeHandler = (song) => {
     dis(removeLike(song))
-    console.log("Like Removed")
   }
 
   useEffect(() => {

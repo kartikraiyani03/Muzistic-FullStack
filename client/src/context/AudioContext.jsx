@@ -22,13 +22,11 @@ let AudioProvider = ({children}) =>
             if (songId === id) {
                 if (isPlaying) {
                     dispatch(pauseHandler())
-                    audio.current.pause()
-                    console.log(isPlaying)
+                    audio.current.pause()   
                 }
                 else {
                     dispatch(playHandler({ songPath, id, poster, artist, songName, index }))
                     audio.current.play()
-                    console.log(isPlaying)
                 }
             }
             else 
@@ -36,13 +34,11 @@ let AudioProvider = ({children}) =>
                 if (audio.current) {
                     dispatch(pauseHandler())
                     audio.current.pause()
-                    console.log(isPlaying)
                 }
 
                 dispatch(playHandler({ songPath, id, poster, artist, songName, index }))
                 audio.current.src = songPath
                 audio.current.play()
-                console.log(isPlaying)
             }
         }
     
@@ -50,14 +46,12 @@ let AudioProvider = ({children}) =>
     
             dispatch(pauseHandler())
             audio.current.pause()
-            console.log(isPlaying)
         }
   
     let prevSong = () => 
     {
       dispatch(prevHandler())
       let {id, poster, artist, songName, index} = store.getState().songPlayer.songObject
-      console.log(store.getState().songPlayer.songObject)
       let prevPath = `src/assets/songs/${id}.mp3`
       audio.current.src = prevPath
       audio.current.play()
@@ -67,7 +61,6 @@ let AudioProvider = ({children}) =>
     {
         dispatch(nextHandler())
         const { id, poster, artist, songName, index } = store.getState().songPlayer.songObject;
-        console.log(store.getState().songPlayer.songObject)
         let nextPath = `src/assets/songs/${id}.mp3`
         audio.current.src = nextPath
         audio.current.play()
@@ -85,7 +78,6 @@ let AudioProvider = ({children}) =>
 
     let durationUpdateHandler = () => {
         setDuration(audio.current.duration)
-        console.log("Duration " + duration)
     }
 
     let seekHandler = (event) => {
@@ -102,4 +94,4 @@ let AudioProvider = ({children}) =>
     );
 }
 
-export default AudioProvider
+export default AudioProvider    

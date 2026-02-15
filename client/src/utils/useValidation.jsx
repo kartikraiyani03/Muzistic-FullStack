@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { signupHandler } from '../redux/slice/accountSlice'
-import axios from 'axios'
+import axiosInstance from '../api/axiosConfig'
 
 const useValidation = () => {
     let nav = useNavigate()
@@ -123,14 +123,21 @@ const useValidation = () => {
         if (Object.values(error).every((error) => error === '') && validateForm() && !exist) {
 
             try {
-                let res = await axios.post("http://localhost:3000/user/register", formData)
-                if (res.status == 200) {
-                    console.log("User Resiter Successfully ", formData)
+                let res = await axiosInstance.post("/user/register", formData)
+                if (res.status == 200 && res.data.success) {
+                    console.log("User Registered Successfully ", res.data.data)
+                    
+                    // Store token in localStorage
+                    localStorage.setItem('token', res.data.token)
+                    localStorage.setItem('user', JSON.stringify(res.data.data))
+                    
                     dis(signupHandler(res.data.data))
                     console.log('Form submitted', res.data.data);
-                    nav('/account')
-                    let emptyData =
-                        setFormData({ name: '', email: '', password: '', cpassword: '' })
+                    
+                    let emptyData = setFormData({ name: '', email: '', password: '', cpassword: '' })
+                    
+                    // Redirect to profile using the redirect field from API
+                    nav(res.data.redirect || '/account')
                 }
                 else {
                     console.log("Registration Failed ", res.data);
@@ -138,7 +145,7 @@ const useValidation = () => {
 
             }
             catch (err) {
-                console.log("Error while Submitted form", e.message);
+                console.log("Error while Submitted form", err.message);
             }
 
 

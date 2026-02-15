@@ -25,12 +25,10 @@ let songPlayerSlice = createSlice({
             state.songObject = action.payload
             state.songId = action.payload.id
             state.songPath = action.payload.songPath
-            console.log(state.songObject)
         },
         pauseHandler : (state) =>
         {
             state.isPlaying = false;
-            console.log(state.songObject)
         },
         prevHandler : (state, action) =>
         {

@@ -5,24 +5,32 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import { IoAddCircleOutline } from "react-icons/io5";
 import { IoCheckmarkCircle } from "react-icons/io5";
-import { add, remove,playListArrayClickHandler } from '../redux/slice/playListSlice';
+import { add, remove, playListArrayClickHandler } from '../redux/slice/playListSlice';
+import { useContext } from 'react';
+import {PlaylistContext} from '../context/PlaylistContext';
+import { useEffect } from 'react';
 
 const AddToPlayList = ({ bar, setBar, barHandler }) => {
 
   let { allPlayList, playListObject } = useSelector((state) => state.playlist)
+  let { getAllPlaylistById, playlistById } = useContext(PlaylistContext)
+
   let { songObject } = useSelector((state) => state.songPlayer)
   let dis = useDispatch()
 
 
-  let addHandler = (playListObj, songObject) => 
-  {
-    dis(add({playListObj, songObject}))
-}
+  useEffect(() => {
+    getAllPlaylistById()
+  }, [])
 
-let removeHandler = (song) => {
+
+  let addHandler = (playListObj, songObject) => {
+    dis(add({ playListObj, songObject }))
+  }
+
+  let removeHandler = (song) => {
     dis(remove(song))
-    console.log("Song Removed")
-}
+  }
 
   return (
     <div className={`p-3 rounded-t-md flex-col items-center overflow-auto justify-center text-white transform fixed bottom-0 left-0 ${bar ? 'translate-y-0' : 'translate-y-full'} transition-transform duration-500 ease-in-out z-50 w-full p-2 bg-gradient-to-t from-black via-zinc-900 to-zinc-800`}>
@@ -33,7 +41,7 @@ let removeHandler = (song) => {
       </div>
       <div className="p-2">
         {
-          allPlayList?.map((playListObj) => {
+          playlistById?.map((playListObj) => {
 
             return (
               <div className="flex hover:bg-zinc-900 rounded-lg justify-between p-2 items-center " key={playListObj.pid}>
@@ -42,10 +50,10 @@ let removeHandler = (song) => {
                   <h1 className='text-semibold text-white text-xl'>{playListObj.pname}</h1>
                 </div>
                 {
-                  allPlayList?.some((playlistObj) =>
+                  playlistById?.some((playlistObj) =>
                     playlistObj?.playlist?.some((song) => song.id === songObject.id)
                   )
-                    ? <IoCheckmarkCircle  className='text-white text-3xl cursor-pointer' />
+                    ? <IoCheckmarkCircle className='text-white text-3xl cursor-pointer' />
                     : <IoAddCircleOutline onClick={() => addHandler(playListObj, songObject)} className='text-white text-3xl cursor-pointer' />
                 }
               </div>

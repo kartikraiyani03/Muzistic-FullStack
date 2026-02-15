@@ -28,4 +28,4 @@ let PlayListSchema = new mg.Schema({
 
 })
 
-module.exports = mg.model("user", PlayListSchema);
+module.exports = mg.model("song", PlayListSchema);

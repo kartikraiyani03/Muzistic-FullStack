@@ -7,7 +7,9 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import account from '../../public/songImg/account.jpg'
 import { IoMdArrowBack } from "react-icons/io";
 import { FaChevronRight } from "react-icons/fa6";
-import {playListClickHandler} from '../redux/slice/playListSlice'
+import { playListClickHandler } from '../redux/slice/playListSlice'
+import { PlaylistContext } from '../context/PlaylistContext';
+import { useContext } from 'react';
 
 const Account = () => {
 
@@ -15,6 +17,7 @@ const Account = () => {
   let { playListObject } = useSelector((state) => state.playlist)
   let nav = useNavigate()
   let { allPlayList, likeList } = useSelector((state) => state.playlist)
+  let { getAllPlaylistById, playlistById } = useContext(PlaylistContext)
   let dis = useDispatch()
 
   let navHandler = () => {
@@ -22,11 +25,10 @@ const Account = () => {
   }
 
   let playListNavHandler = (value) => {
-    console.log(value)
     dis(playListClickHandler(value))
     nav(`/playlist/${value?.pid}`)
   }
- 
+
   return (
     <div className='pt-[60px] min-h-[100vh] pb-[150px] text-white bg-gradient-to-t from-zinc-900 via-zinc-900 to-black'>
       {
@@ -41,12 +43,12 @@ const Account = () => {
                   className="flex mx-auto w-5/12 justify-center border-2 border-red rounded-3xl 
             bg-transparent px-3 py-1 text-sm/6 font-semibold text-red shadow-sm hover:bg-red hover:border-red hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red"
                 >
-                  Edit Profile  
+                  Edit Profile
                 </button>
               </div>
               <div className="flex justify-around items-center my-4">
                 <div className="">
-                  <h1 className='text-gray  font-semibold text-center'>{allPlayList.length}</h1>
+                  <h1 className='text-gray  font-semibold text-center'>{playlistById.length}</h1>
                   <p className='text-gray text-[12px]'>PLAYLIST</p>
                 </div>
                 <div className="">
@@ -58,10 +60,9 @@ const Account = () => {
                 <h1 className='font-semibold text-2xl px-3'>You&apos;r Playlist</h1>
                 <div className="mt-4">
                   {
-                    allPlayList.length > 0
+                    playlistById.length > 0
                       ? (
-                        Array.isArray(allPlayList) && allPlayList.map((value) => {
-                          console.log(value)
+                        Array.isArray(playlistById) && playlistById.map((value) => {
                           return (
                             <div onClick={() => playListNavHandler(value)} className="flex justify-between  bg-zinc-800 py-3 my-2 px-4 pr-5 rounded-md " key={value?.pid}>
                               <div className="flex gap-4  itesm-center">

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
@@ -18,11 +18,21 @@ import 'regenerator-runtime/runtime'
 import Playlist from './pages/Playlist'
 import AudioProvider from './context/AudioContext'
 import AddToPlayList from './components/AddToPlayList'
+import { useDispatch, useSelector } from 'react-redux'
+import { restoreUser } from './redux/slice/accountSlice'
 
 function App() {
 
   let [open, setOpen] = useState(false)
   let [bar, setBar] = useState(false)
+  let { login } = useSelector((state) => state.account)
+  let dis = useDispatch()
+
+  // Restore user on app load from localStorage
+  useEffect(() => {
+    dis(restoreUser())
+  }, [dis])
+
   // let {audio} = useContext(AudioContext)
   let barHandler = () =>
   {
@@ -30,21 +40,18 @@ function App() {
   }
 
   let toggleHandler = () => {
-    console.log("Open" + open)
     setBar(false)
     setOpen(!open)
   }
 
-  let [login, setLogin] = useState(false)
-
   return (
     <div className='App relative bg-black'>
-      <NavBar className="z-50" login={login} setLogin={setLogin} />
+      <NavBar className="z-50" />
       <AudioProvider>
         <Routes >
           <Route path='/' element={<Home />}></Route>
-          <Route path='/login' login={login} setLogin={setLogin} element={<Login />}></Route>
-          <Route path='/signup' login={login} setLogin={setLogin} element={<Signup />}></Route>
+          <Route path='/login' element={<Login />}></Route>
+          <Route path='/signup' element={<Signup />}></Route>
           <Route path='/artist/:id' element={<ArtistProfile />}></Route>
           <Route path='/account' element={<Account />}></Route>
           <Route path='/library' element={<Library />}></Route>

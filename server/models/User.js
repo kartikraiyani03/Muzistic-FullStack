@@ -15,7 +15,7 @@ let UserSchema = new mg.Schema({
     },
     image:{
         type:String
-    }
+    },
 })
 
 module.exports = mg.model("user",UserSchema); 

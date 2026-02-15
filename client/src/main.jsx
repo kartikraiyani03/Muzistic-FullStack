@@ -11,6 +11,7 @@ import persistStore from 'redux-persist/es/persistStore'
 import { PersistGate } from 'redux-persist/integration/react'
 import 'regenerator-runtime/runtime'
 import AudioProvider from './context/AudioContext.jsx'
+import PlaylistProvider from './context/PlaylistContext.jsx'
 
 
 let persistor = persistStore(store)
@@ -21,9 +22,11 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <AudioProvider>
-            <App />
-          </AudioProvider>
+          <PlaylistProvider>
+            <AudioProvider>
+              <App />
+            </AudioProvider>
+          </PlaylistProvider>
         </PersistGate>
       </Provider>
     </StrictMode>

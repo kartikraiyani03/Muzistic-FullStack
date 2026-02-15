@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import logo from '../../public/logo.png'
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios'
+import axiosInstance from '../api/axiosConfig'
 import { useDispatch } from 'react-redux';
-import { setLogin, signupHandler } from '../redux/slice/accountSlice';
+import { setLogin, loginHandler, logoutHandler } from '../redux/slice/accountSlice';
 
 const Login = ({ login }) => {
 
@@ -86,23 +86,25 @@ const Login = ({ login }) => {
     if (Object.values(error).every((error) => error === '') && validateForm()) {
 
       try {
-        let res = await axios.post("http://localhost:3000/user/login", formData)
-        if (res.status == 200) {
-          console.log("User Login Successfully ", res.data.data[0])
-          console.log('Form submitted', formData);
+        let res = await axiosInstance.post("/user/login", formData)
+        if (res.status == 200 && res.data.success) {
 
-          let emptyData =
-            setFormData({ email: '', password: '' })
-          dis(signupHandler(res.data.data[0]))
-          // dis(setLogin())
-          nav('/account')
+          // Store token in localStorage
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('user', JSON.stringify(res.data.data))
+          
+          let emptyData = setFormData({ email: '', password: '' })
+          dis(loginHandler(res.data.data))
+          
+          // Redirect to profile using the redirect field from API
+          nav(res.data.redirect || '/account')
         }
         else {
           console.log("Login Failed ", res.data);
         }
       }
       catch (err) {
-        console.log("Error while Submitted form", e.message);
+        console.log("Error while Submitted form", err.message);
       }
 
     } else {
